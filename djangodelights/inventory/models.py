@@ -23,3 +23,8 @@ class RecipeRequirement(models.Model):
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+class Purchase(models.Model):
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.PROTECT)
+    timestamp = models.DateTimeField(auto_now_add=True)
