@@ -1,0 +1,27 @@
+{% extends 'inventory/base.html' %}
+{% block title %}Ingredients{% endblock %}
+
+{% block content %}
+<h1>Ingredients</h1>
+{% if ingredients %}
+    <table>
+        <tr>
+            <th>Ingredient</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Price per unit</th>
+        </tr>
+        {% for ingredient in ingredients %}
+            <tr>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.unit }}</td>
+                <td>{{ ingredient.price_per_unit }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else%}
+    <p>Nothin in inventory</p>
+{% endif %}
+    
+{% endblock %}
