@@ -7,6 +7,9 @@ class Ingredient(models.Model):
     unit = models.CharField(max_length=20, default='gram')
     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def get_total_cost(self):
+        return self.quantity * self.price_per_unit
+    
     def __str__(self):
         return f"{self.name}"
 
