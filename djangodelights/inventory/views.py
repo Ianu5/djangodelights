@@ -1,7 +1,8 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
 from django.views.generic import TemplateView, ListView, CreateView
+from .forms import MenuItemForm, NewIngredientForm, RecipeRequirementForm
 
 # Create your views here.
 class IngredientView(ListView):
@@ -22,8 +23,6 @@ class PurchaseView(ListView):
     context_object_name = "purchases"
 
 
-# This class needs to be rewritten because the cost is not correctly done
-# I need to multiply quantity with price per unit
 class ProfitView(TemplateView):
     template_name = "inventory/profit.html"
 
@@ -39,3 +38,29 @@ class ProfitView(TemplateView):
 
 def home(request):
     return render(request, 'inventory/home.html')
+
+#need to test the below code with template first others
+"""def ingredient_update_view(request, pk):
+    ingredient = get_object_or_404(Ingredient, pk=pk)
+
+    if request.method == "POST":
+        form = NewIngredientForm(request.POST, instance=ingredient)
+        if form.is_valid():
+            form.save()
+            return redirect('ingredient')
+        else:
+            form = NewIngredientForm(instance=ingredient)
+
+    return render(request, 'ingredient_update.html', {'form':form, 'ingredient':ingredient})
+    """
+
+def menu_item_create(request):
+    if request.method == "POST":
+        form = MenuItemForm(request.POST)
+        if form.is_valid():
+            return(redirect, "home")
+    else:
+        form = MenuItemForm()
+
+    return render(request, "menu_item_create.html", {"form":form})
+    

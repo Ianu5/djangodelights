@@ -10,6 +10,7 @@
             <th>Quantity</th>
             <th>Unit</th>
             <th>Price per unit</th>
+            <th>Edit</th>
         </tr>
         {% for ingredient in ingredients %}
             <tr>
@@ -17,6 +18,7 @@
                 <td>{{ ingredient.quantity }}</td>
                 <td>{{ ingredient.unit }}</td>
                 <td>{{ ingredient.price_per_unit }}</td>
+                <td><a href="{% url 'ingredient_update' ingredient.pk %}">edit</a></td>
             </tr>
         {% endfor %}
     </table>
