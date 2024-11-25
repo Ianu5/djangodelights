@@ -1,14 +1,22 @@
 from typing import Any
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ingredient, MenuItem, Purchase, RecipeRequirement
-from django.views.generic import TemplateView, ListView, CreateView
-from .forms import MenuItemForm, NewIngredientForm, RecipeRequirementForm
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from .forms import MenuItemForm, NewIngredientForm, RecipeRequirementForm, PurchaseForm
+from django.urls import reverse_lazy
 
 # Create your views here.
 class IngredientView(ListView):
     model = Ingredient
     template_name = "ingredient_list.html"
     context_object_name = "ingredients"
+
+
+class IngredientUpdate(UpdateView):
+    model = Ingredient
+    template_name = "inventory/ingredient_update.html"
+    form_class = NewIngredientForm
+    success_url = reverse_lazy("ingredient")
 
 
 class MenuView(ListView):
@@ -39,28 +47,47 @@ class ProfitView(TemplateView):
 def home(request):
     return render(request, 'inventory/home.html')
 
-#need to test the below code with template first others
-"""def ingredient_update_view(request, pk):
-    ingredient = get_object_or_404(Ingredient, pk=pk)
-
-    if request.method == "POST":
-        form = NewIngredientForm(request.POST, instance=ingredient)
-        if form.is_valid():
-            form.save()
-            return redirect('ingredient')
-        else:
-            form = NewIngredientForm(instance=ingredient)
-
-    return render(request, 'ingredient_update.html', {'form':form, 'ingredient':ingredient})
-    """
-
 def menu_item_create(request):
     if request.method == "POST":
         form = MenuItemForm(request.POST)
         if form.is_valid():
-            return(redirect, "home")
+            form.save()
+            return(redirect("menu"))
     else:
-        form = MenuItemForm()
+        form = MenuItemForm
 
-    return render(request, "menu_item_create.html", {"form":form})
-    
+    return render(request, "inventory/menu_item_create.html", {"form":form})
+
+# Here I need to implement some logic to not create a purchase if we don't have enough ingredients
+def purchase_create(request):
+    if request.method == "POST":
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return(redirect("purchase"))
+    else:
+        form = PurchaseForm
+    return render(request, "inventory/purchase_create.html", {"form":form})
+
+def recipe_requirement_create(request):
+    if request.method == "POST":
+        form = RecipeRequirementForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("menu")
+    else:
+        form = RecipeRequirementForm
+    return render(request, "inventory/recipe_requirement_form.html", {"form":form})
+
+def add_new_ingredient(request):
+    if request.method == "POST":
+        form = NewIngredientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("ingredient")
+    else:
+        form = NewIngredientForm
+    return render(request, "inventory/ingredient_create_form.html")
+
+def update_ingredient():
+    pass

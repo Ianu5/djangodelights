@@ -21,7 +21,7 @@ class MenuItem(models.Model):
     def __str__(self):
         return f"{self.name}"
     
-
+# I have to get the ForeignKey from the units in Ingredient so it is the same in the form where the user has to input the quantity
 class RecipeRequirement(models.Model):
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)

@@ -18,12 +18,13 @@
                 <td>{{ ingredient.quantity }}</td>
                 <td>{{ ingredient.unit }}</td>
                 <td>{{ ingredient.price_per_unit }}</td>
-                <td><a href="{% url 'ingredient_update' ingredient.pk %}">edit</a></td>
+                <td><a href="{% url 'update_ingredient' ingredient.pk %}">edit</a></td>
             </tr>
         {% endfor %}
     </table>
 {% else%}
     <p>Nothin in inventory</p>
 {% endif %}
+    <a href="{% url 'create_ingredient' %}">New Ingredient</a>
     
 {% endblock %}
