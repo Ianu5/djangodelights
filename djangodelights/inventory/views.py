@@ -61,6 +61,17 @@ def menu_item_create(request):
 # Here I need to implement some logic to not create a purchase if we don't have enough ingredients
 def purchase_create(request, item_name):
     order = get_object_or_404(MenuItem, name=item_name)
+    # get the recipe requirements
+    requirements = RecipeRequirement.objects.filter(menu_item=order)
+    for requirement in requirements:
+        ingredient = Ingredient.objects.filter(name=requirement.ingredient.name).first()
+
+        if ingredient:
+            if ingredient.quantity < requirement.quantity:
+                return redirect('home')
+
+    ingredient.quantity -= requirement.quantity
+    ingredient.save()
     purchase = Purchase.objects.create(menu_item=order)
     purchase.save()
     return redirect('purchase')
