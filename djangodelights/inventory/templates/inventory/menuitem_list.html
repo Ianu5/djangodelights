@@ -8,11 +8,13 @@
         <tr>
             <th>Dish</th>
             <th>Price</th>
+            <th></th>
         </tr>
         {% for item in menu %}
             <tr>
                 <td>{{ item.name }}</td>
                 <td>{{ item.price }}</td>
+                <td><a href="{% url 'add_purchase' item.name %}" class="btn btn-primary">purchase</a></td>
             </tr>
         {% endfor %}
     </table>

@@ -59,15 +59,12 @@ def menu_item_create(request):
     return render(request, "inventory/menu_item_create.html", {"form":form})
 
 # Here I need to implement some logic to not create a purchase if we don't have enough ingredients
-def purchase_create(request):
-    if request.method == "POST":
-        form = PurchaseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return(redirect("purchase"))
-    else:
-        form = PurchaseForm
-    return render(request, "inventory/purchase_create.html", {"form":form})
+def purchase_create(request, item_name):
+    order = get_object_or_404(MenuItem, name=item_name)
+    purchase = Purchase.objects.create(menu_item=order)
+    purchase.save()
+    return redirect('purchase')
+
 
 def recipe_requirement_create(request):
     if request.method == "POST":
@@ -88,6 +85,3 @@ def add_new_ingredient(request):
     else:
         form = NewIngredientForm
     return render(request, "inventory/ingredient_create_form.html")
-
-def update_ingredient():
-    pass
